@@ -351,28 +351,28 @@ onUnmounted(() => {
                         </button>
                     </div>
                 </div>
+            </div>
 
-                <div
-                    class="transition-all duration-700"
-                    :class="
-                        menuVisible
-                            ? 'translate-y-0 opacity-100'
-                            : 'translate-y-6 opacity-0'
-                    "
-                >
-                    <AccordionGallery
-                        :items="galleryItems"
-                        :default-index="0"
-                        :height="480"
-                        :gap="12"
-                        :radius="16"
-                        :expand-ratio="0.45"
-                        accent-color="#F6E7C6"
-                        overlay-color="#2C2318"
-                        text-color="#FDFBF7"
-                        :grayscale="false"
-                    />
-                </div>
+            <div
+                class="transition-all duration-700"
+                :class="
+                    menuVisible
+                        ? 'translate-y-0 opacity-100'
+                        : 'translate-y-6 opacity-0'
+                "
+            >
+                <AccordionGallery
+                    :items="galleryItems"
+                    :default-index="0"
+                    :height="480"
+                    :gap="12"
+                    :radius="16"
+                    :expand-ratio="0.35"
+                    accent-color="#F6E7C6"
+                    overlay-color="#2C2318"
+                    text-color="#FDFBF7"
+                    :grayscale="false"
+                />
             </div>
         </section>
 

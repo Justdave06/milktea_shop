@@ -49,10 +49,10 @@ const props = withDefaults(
         radius: 16,
         expandRatio: 0.52,
         orientation: 'horizontal',
-        duration: 0.6,
-        ease: 'power3.out',
-        parallax: 0.5,
-        tilt: 8,
+        duration: 0.8,
+        ease: 'power3.inOut',
+        parallax: 0.4,
+        tilt: 0,
         stagger: 0.06,
         trigger: 'hover',
         showLabels: true,
@@ -69,6 +69,7 @@ const textRefs = ref<(HTMLElement | null)[]>([]);
 const tlRef = ref<gsap.core.Timeline | null>(null);
 const firstRunRef = ref(true);
 const mediaSizeRef = ref(320);
+const galleryHeight = ref(props.height);
 
 const vertical = computed(() => props.orientation === 'vertical');
 const count = computed(() => props.items.length);
@@ -99,7 +100,7 @@ function applyLayout(animate: boolean) {
 
     tlRef.value?.kill();
     const dur = animate && !prefersReduced.value ? props.duration : 0;
-    const tl = gsap.timeline();
+    const tl = gsap.timeline({ defaults: { force3D: true } });
 
     panels.forEach((panel, i) => {
         if (!panel) {
@@ -184,12 +185,12 @@ function measure() {
     }
 
     const rect = el.getBoundingClientRect();
-    const total = vertical.value ? rect.height : rect.width;
-    const usable = Math.max(total - props.gap * (count.value - 1), 120);
-    const size = Math.max(
-        140,
-        usable * Math.min(Math.max(props.expandRatio, 0.2), 0.9) * 1.22,
-    );
+    const usable = Math.max(rect.width - props.gap * (count.value - 1), 120);
+    const r = Math.min(Math.max(props.expandRatio, 0.2), 0.9);
+    const size = vertical.value
+        ? Math.round(props.height * 1.6)
+        : Math.max(140, Math.min(Math.round(r * usable), 700));
+    galleryHeight.value = size;
     mediaSizeRef.value = size;
     el.style.setProperty('--ag-media-size', `${size}px`);
     applyLayout(!firstRunRef.value);
@@ -266,7 +267,7 @@ function handleKeyDown(i: number, e: KeyboardEvent) {
         :class="[vertical ? 'flex-col' : 'flex-row', className]"
         :style="{
             gap: `${gap}px`,
-            height: vertical ? `${Math.round(height * 1.6)}px` : `${height}px`,
+            height: `${galleryHeight}px`,
         }"
         role="list"
         aria-label="Image accordion gallery"
@@ -302,9 +303,7 @@ function handleKeyDown(i: number, e: KeyboardEvent) {
                         width: vertical
                             ? '100%'
                             : 'var(--ag-media-size, 320px)',
-                        height: vertical
-                            ? 'var(--ag-media-size, 320px)'
-                            : '100%',
+                        height: 'var(--ag-media-size, 320px)',
                         willChange: 'transform, filter',
                     }"
                 >
