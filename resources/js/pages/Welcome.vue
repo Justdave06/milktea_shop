@@ -12,6 +12,21 @@ const productsVisible = ref(false);
 const newsVisible = ref(false);
 const footerVisible = ref(false);
 const fullStoryVisible = ref(false);
+const mobileMenuOpen = ref(false);
+const isMobile = ref(false);
+const galleryIndex = ref(0);
+
+function checkMobile() {
+    isMobile.value = window.innerWidth < 640;
+}
+
+function galleryPrev() {
+    if (galleryIndex.value > 0) galleryIndex.value--;
+}
+
+function galleryNext() {
+    if (galleryIndex.value < galleryItems.value.length - 1) galleryIndex.value++;
+}
 
 const drinks = [
     {
@@ -209,11 +224,14 @@ function setupObserver() {
 onMounted(() => {
     setupObserver();
     window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', checkMobile, { passive: true });
     handleScroll();
+    checkMobile();
 });
 
 onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll);
+    window.removeEventListener('resize', checkMobile);
 });
 </script>
 
@@ -233,7 +251,8 @@ onUnmounted(() => {
             >
                 <a href="/" class="flex items-center gap-2.5">
                     <svg
-                        class="h-7 w-7 text-[#8B5E3C]"
+                        class="h-7 w-7"
+                        :class="scrolled ? 'text-[#8B5E3C]' : 'text-white'"
                         viewBox="0 0 28 28"
                         fill="none"
                     >
@@ -269,8 +288,9 @@ onUnmounted(() => {
                         />
                     </svg>
                     <span
-                        class="text-[16px] font-bold tracking-[0.01em] text-[#2C2318]"
-                        >Boteaque                    </span>
+                        class="text-[16px] font-bold tracking-[0.01em]"
+                        :class="scrolled ? 'text-[#8B5E3C]' : 'text-white'"
+                        >Boteaque</span>
                 </a>
 
                 <div class="hidden items-center gap-8 md:flex">
@@ -281,7 +301,7 @@ onUnmounted(() => {
                         >Home</a
                     >
                     <a
-                        href="#menu"
+                        href="#products"
                         class="text-[13px] font-medium transition-colors"
                         :class="scrolled ? 'text-[#2C2318]/50 hover:text-[#8B5E3C]' : 'text-white/70 hover:text-white'"
                         >Menu</a
@@ -290,46 +310,93 @@ onUnmounted(() => {
                         href="#about"
                         class="text-[13px] font-medium transition-colors"
                         :class="scrolled ? 'text-[#2C2318]/50 hover:text-[#8B5E3C]' : 'text-white/70 hover:text-white'"
-                        >Our Story</a                    >
+                        >Our Story</a
+                    >
                 </div>
 
-                <a
-                    href="#"
-                    class="rounded-full px-6 py-2.5 text-[13px] font-semibold transition-all duration-300"
-                    :class="scrolled ? 'bg-[#8B5E3C] text-white hover:bg-[#7A5234]' : 'border border-white/30 text-white hover:border-white/60'"
-                >
-                    Sign-in
-                </a>
+                <div class="flex items-center gap-3">
+                    <a
+                        href="#"
+                        class="rounded-full px-4 py-2 text-[12px] font-semibold transition-all duration-300 sm:px-6 sm:py-2.5 sm:text-[13px]"
+                        :class="scrolled ? 'bg-[#8B5E3C] text-white hover:bg-[#7A5234]' : 'border border-white/30 text-white hover:border-white/60'"
+                    >
+                        Sign-in
+                    </a>
+
+                    <!-- Mobile hamburger -->
+                    <button
+                        @click="mobileMenuOpen = !mobileMenuOpen"
+                        class="flex h-10 w-10 items-center justify-center rounded-full transition-colors md:hidden"
+                        :class="scrolled ? 'text-[#2C2318] hover:bg-[#2C2318]/5' : 'text-white hover:bg-white/10'"
+                    >
+                        <svg v-if="!mobileMenuOpen" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                        </svg>
+                        <svg v-else class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
             </nav>
+
+            <!-- Mobile menu -->
+            <div
+                class="overflow-hidden transition-all duration-300 md:hidden"
+                :style="{ maxHeight: mobileMenuOpen ? '300px' : '0px', opacity: mobileMenuOpen ? 1 : 0 }"
+            >
+                <div class="border-t px-6 py-4" :class="scrolled ? 'border-[#2C2318]/[0.06] bg-white' : 'border-white/10 bg-[#2C2318]/80 backdrop-blur-md'">
+                    <a
+                        href="#home"
+                        @click="mobileMenuOpen = false"
+                        class="block py-2.5 text-[14px] font-medium transition-colors"
+                        :class="scrolled ? 'text-[#2C2318]/60 hover:text-[#8B5E3C]' : 'text-white/70 hover:text-white'"
+                    >Home</a>
+                    <a
+                        href="#products"
+                        @click="mobileMenuOpen = false"
+                        class="block py-2.5 text-[14px] font-medium transition-colors"
+                        :class="scrolled ? 'text-[#2C2318]/60 hover:text-[#8B5E3C]' : 'text-white/70 hover:text-white'"
+                    >Menu</a>
+                    <a
+                        href="#about"
+                        @click="mobileMenuOpen = false"
+                        class="block py-2.5 text-[14px] font-medium transition-colors"
+                        :class="scrolled ? 'text-[#2C2318]/60 hover:text-[#8B5E3C]' : 'text-white/70 hover:text-white'"
+                    >Our Story</a>
+                </div>
+            </div>
         </header>
 
         <!-- ==================== HERO ==================== -->
         <section
             id="home"
-            class="relative flex min-h-screen items-center overflow-hidden"
+            class="relative flex min-h-screen overflow-hidden max-sm:items-end sm:items-center"
         >
             <!-- Background image -->
             <div class="absolute inset-0">
                 <img
                     src="/images/hero.png"
                     alt="Milk tea"
-                    class="h-full w-full object-cover"
+                    class="h-full w-full object-cover [object-position:70%_center] sm:object-center"
                 />
             </div>
 
+            <!-- Dark gradient overlay for text readability (mobile only) -->
+            <div class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/70 via-black/30 to-transparent max-sm:block sm:hidden"></div>
+
             <div
-                class="relative mx-auto w-full max-w-[1200px] px-6 py-24 lg:px-8"
+                class="relative mx-auto w-full max-w-[1200px] px-6 max-sm:pb-16 max-sm:pt-24 py-24 lg:px-8"
             >
                 <div class="max-w-xl">
                     <h1
-                        class="text-[2.75rem] leading-[1.08] font-bold tracking-[-0.02em] text-[#FDFBF7] sm:text-6xl"
+                        class="text-[2rem] leading-[1.1] font-bold tracking-[-0.02em] text-[#FDFBF7] sm:text-5xl lg:text-6xl"
                     >
                         Savour Pure
                         <br />
-                        Elegance &amp; Freshness 
+                        Elegance &amp; Freshness
                     </h1>
                     <p
-                        class="mt-5 max-w-md text-[15px] leading-relaxed text-[#FDFBF7]/75"
+                        class="mt-5 max-w-[320px] text-[14px] leading-relaxed text-[#FDFBF7]/75 sm:max-w-md sm:text-[15px]"
                     >
                         Designed for milk tea lovers, bringing handcrafted, world-class beverages straight to the heart of the Philippines.
                     </p>
@@ -349,7 +416,7 @@ onUnmounted(() => {
         <!-- ==================== MENU ==================== -->
         <section id="menu" data-section="menu" class="py-16 sm:py-24">
             <div
-                class="flex items-center justify-center py-12 transition-all duration-700 sm:py-20"
+                class="flex items-center justify-center py-8 transition-all duration-700 sm:py-20"
                 :class="
                     menuVisible
                         ? 'translate-y-0 opacity-100'
@@ -357,7 +424,7 @@ onUnmounted(() => {
                 "
             >
                 <h2
-                    class="text-center text-[3rem] font-bold tracking-[-0.03em] text-[#2C2318] sm:text-[5rem] lg:text-[7rem]"
+                    class="text-center text-[2rem] font-bold tracking-[-0.03em] text-[#2C2318] sm:text-[3rem] lg:text-[5rem]"
                 >
                     Signature Collection
                 </h2>
@@ -371,18 +438,68 @@ onUnmounted(() => {
                         : 'translate-y-6 opacity-0'
                 "
             >
-                <AccordionGallery
-                    :items="galleryItems"
-                    :default-index="0"
-                    :height="480"
-                    :gap="12"
-                    :radius="16"
-                    :expand-ratio="0.35"
-                    accent-color="#F6E7C6"
-                    overlay-color="#2C2318"
-                    text-color="#FDFBF7"
-                    :grayscale="true"
-                />
+                <!-- Desktop: Accordion gallery -->
+                <div v-if="!isMobile">
+                    <AccordionGallery
+                        :items="galleryItems"
+                        :default-index="0"
+                        :height="480"
+                        :gap="12"
+                        :radius="16"
+                        :expand-ratio="0.35"
+                        accent-color="#F6E7C6"
+                        overlay-color="#2C2318"
+                        text-color="#FDFBF7"
+                        :grayscale="true"
+                    />
+                </div>
+
+                <!-- Mobile: simple carousel gallery -->
+                <div v-else class="relative px-12">
+                    <div class="overflow-hidden">
+                        <div
+                            class="flex transition-transform duration-300 ease-out"
+                            :style="{ transform: `translateX(-${galleryIndex * 196}px)` }"
+                        >
+                            <div
+                                v-for="(item, i) in galleryItems"
+                                :key="i"
+                                class="relative mr-3 h-[240px] w-[180px] flex-shrink-0 overflow-hidden rounded-2xl"
+                            >
+                                <img
+                                    :src="item.image"
+                                    :alt="item.label"
+                                    class="h-full w-full object-cover"
+                                />
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                                <div class="absolute bottom-3 left-3 right-3">
+                                    <p class="text-[12px] font-semibold text-white">{{ item.label }}</p>
+                                    <p class="text-[10px] text-white/60">{{ item.details }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Prev arrow -->
+                    <button
+                        @click="galleryPrev"
+                        class="absolute left-1 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-white/80 shadow-md backdrop-blur-sm"
+                    >
+                        <svg class="h-4 w-4 text-[#2C2318]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                        </svg>
+                    </button>
+
+                    <!-- Next arrow -->
+                    <button
+                        @click="galleryNext"
+                        class="absolute right-1 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-white/80 shadow-md backdrop-blur-sm"
+                    >
+                        <svg class="h-4 w-4 text-[#2C2318]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                        </svg>
+                    </button>
+                </div>
             </div>
         </section>
 
@@ -401,9 +518,9 @@ onUnmounted(() => {
                             : 'translate-y-6 opacity-0'
                     "
                 >
-                    <div class="flex items-center justify-center py-12 sm:py-20">
+                    <div class="flex items-center justify-center py-8 sm:py-20">
                         <h2
-                            class="text-center text-[3rem] font-bold tracking-[-0.03em] text-[#2C2318] sm:text-[5rem] lg:text-[7rem]"
+                            class="text-center text-[2rem] font-bold tracking-[-0.03em] text-[#2C2318] sm:text-[3rem] lg:text-[5rem]"
                         >
                             Our Menu
                         </h2>
@@ -419,36 +536,61 @@ onUnmounted(() => {
                         : 'translate-y-6 opacity-0'
                 "
             >
-                <CircularGallery
-                    :items="circularItems"
-                    :bend="3"
-                    text-color="#2C2318"
-                    :border-radius="12"
-                    :scroll-speed="2"
-                    :height="650"
-                />
+                <!-- Desktop: Circular gallery -->
+                <div v-if="!isMobile">
+                    <CircularGallery
+                        :items="circularItems"
+                        :bend="3"
+                        text-color="#2C2318"
+                        :border-radius="12"
+                        :scroll-speed="2"
+                        :height="650"
+                    />
+                </div>
+
+                <!-- Mobile: simple product card grid -->
+                <div v-else class="px-4">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div
+                            v-for="(item, i) in circularItems"
+                            :key="i"
+                            class="overflow-hidden rounded-xl bg-white shadow-sm"
+                        >
+                            <div class="h-36 overflow-hidden">
+                                <img
+                                    :src="item.image"
+                                    :alt="item.text"
+                                    class="h-full w-full object-cover"
+                                />
+                            </div>
+                            <div class="p-3">
+                                <p class="text-[11px] font-semibold leading-tight text-[#2C2318]">{{ item.text }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="mt-8 flex justify-center">
-                    <a
-                        href="/all-products"
-                        class="inline-flex items-center rounded-full border border-[#8B5E3C]/20 px-8 py-3 text-[13px] font-semibold text-[#8B5E3C] transition-all duration-300 hover:border-[#8B5E3C]/40 hover:bg-[#8B5E3C]/5"
-                    >
-                        View All Products
-                        <svg
-                            class="ml-2 h-3.5 w-3.5"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            viewBox="0 0 24 24"
+                        <a
+                            href="/all-products"
+                            class="inline-flex items-center rounded-full border border-[#8B5E3C]/20 px-8 py-3 text-[13px] font-semibold text-[#8B5E3C] transition-all duration-300 hover:border-[#8B5E3C]/40 hover:bg-[#8B5E3C]/5"
                         >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                            />
-                        </svg>
-                    </a>
-                </div>
+                            View All Products
+                            <svg
+                                class="ml-2 h-3.5 w-3.5"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                                />
+                            </svg>
+                        </a>
+                    </div>
             </div>
         </section>
 
@@ -469,7 +611,7 @@ onUnmounted(() => {
                 >
                     <div class="flex items-center justify-center py-12 sm:py-20">
                         <h2
-                            class="text-center text-[2.5rem] font-bold tracking-[-0.03em] text-[#2C2318] sm:text-[4rem] lg:text-[5.5rem]"
+                            class="text-center text-[1.75rem] font-bold tracking-[-0.03em] text-[#2C2318] sm:text-[2.5rem] lg:text-[4rem]"
                         >
                             Why Choose Us?
                         </h2>
@@ -652,7 +794,7 @@ onUnmounted(() => {
                 >
                     <div class="flex items-center justify-center py-12 sm:py-20">
                         <h2
-                            class="text-center text-[2.5rem] font-bold tracking-[-0.03em] text-[#2C2318] sm:text-[4rem] lg:text-[5.5rem]"
+                            class="text-center text-[1.75rem] font-bold tracking-[-0.03em] text-[#2C2318] sm:text-[2.5rem] lg:text-[4rem]"
                         >
                             Visit Our Store Near You
                         </h2>
@@ -663,7 +805,7 @@ onUnmounted(() => {
                         <div
                             class="overflow-hidden rounded-2xl border border-[#2C2318]/[0.06] bg-white"
                         >
-                            <div class="h-48 overflow-hidden">
+                            <div class="h-40 overflow-hidden sm:h-48">
                                 <img
                                     src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&h=400&fit=crop&auto=format"
                                     alt="Boteaque Concept Store"
@@ -734,7 +876,7 @@ onUnmounted(() => {
 
 
 
-    
+
 
         <!-- ==================== FOOTER ==================== -->
         <footer

@@ -25,7 +25,7 @@ defineProps<{
                     </svg>
                     Back to home
                 </Link>
-                <h1 class="text-[3rem] font-bold tracking-[-0.03em] text-[#2C2318] sm:text-[5rem]">
+                <h1 class="text-[2rem] font-bold tracking-[-0.03em] text-[#2C2318] sm:text-[3rem] lg:text-[5rem]">
                     All Products
                 </h1>
                 <p class="mt-4 max-w-lg text-[15px] leading-relaxed text-[#2C2318]/50">
@@ -43,7 +43,7 @@ defineProps<{
                         :key="product.name"
                         class="overflow-hidden rounded-2xl border border-[#2C2318]/[0.06] bg-white"
                     >
-                        <div class="h-64 overflow-hidden">
+                        <div class="h-48 overflow-hidden sm:h-64">
                             <img
                                 :src="product.image"
                                 :alt="product.name"
