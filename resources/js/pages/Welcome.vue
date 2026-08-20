@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
 import { ref, onMounted, onUnmounted, computed } from 'vue';
 import AccordionGallery from '@/components/AccordionGallery.vue';
 import CircularGallery from '@/components/CircularGallery.vue';
@@ -12,6 +11,7 @@ const storeVisible = ref(false);
 const productsVisible = ref(false);
 const newsVisible = ref(false);
 const footerVisible = ref(false);
+const fullStoryVisible = ref(false);
 
 const drinks = [
     {
@@ -138,13 +138,11 @@ const galleryItems = computed(() => [
     },
 ]);
 
-/* Circular gallery items: products with prices and order buttons */
+/* Circular gallery items: products with prices */
 const circularItems = computed(() =>
     filteredDrinks.value.map((drink) => ({
         image: drink.image,
         text: `${drink.name}  ·  ${drink.priceM}`,
-        buttonText: 'Order Now',
-        buttonLink: `/product/${encodeURIComponent(drink.name)}`,
     })),
 );
 
@@ -226,14 +224,14 @@ onUnmounted(() => {
             class="fixed inset-x-0 top-0 z-50 transition-all duration-300"
             :class="
                 scrolled
-                    ? 'bg-[#F6E7C6] shadow-[0_1px_0_0_rgba(0,0,0,0.06)]'
+                    ? 'bg-white shadow-[0_1px_0_0_rgba(0,0,0,0.06)]'
                     : 'bg-transparent'
             "
         >
             <nav
                 class="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-4 lg:px-8"
             >
-                <Link href="/" class="flex items-center gap-2.5">
+                <a href="/" class="flex items-center gap-2.5">
                     <svg
                         class="h-7 w-7 text-[#8B5E3C]"
                         viewBox="0 0 28 28"
@@ -271,11 +269,9 @@ onUnmounted(() => {
                         />
                     </svg>
                     <span
-                        class="text-[16px] font-bold tracking-[0.01em]"
-                        :class="scrolled ? 'text-[#2C2318]' : 'text-white'"
-                        >Boteaque</span
-                    >
-                </Link>
+                        class="text-[16px] font-bold tracking-[0.01em] text-[#2C2318]"
+                        >Boteaque                    </span>
+                </a>
 
                 <div class="hidden items-center gap-8 md:flex">
                     <a
@@ -294,17 +290,15 @@ onUnmounted(() => {
                         href="#about"
                         class="text-[13px] font-medium transition-colors"
                         :class="scrolled ? 'text-[#2C2318]/50 hover:text-[#8B5E3C]' : 'text-white/70 hover:text-white'"
-                        >Our Story</a
-                    >
-                    
+                        >Our Story</a                    >
                 </div>
 
                 <a
-                    href="#products"
+                    href="#"
                     class="rounded-full px-6 py-2.5 text-[13px] font-semibold transition-all duration-300"
                     :class="scrolled ? 'bg-[#8B5E3C] text-white hover:bg-[#7A5234]' : 'border border-white/30 text-white hover:border-white/60'"
                 >
-                    My orders
+                    Sign-in
                 </a>
             </nav>
         </header>
@@ -341,17 +335,12 @@ onUnmounted(() => {
                     </p>
                     <div class="mt-8 flex gap-3">
                         <a
-                            href="#menu"
+                            href="#products"
                             class="inline-flex items-center rounded-full bg-[#8B5E3C] px-7 py-3 text-[13px] font-semibold text-white transition-all duration-300 hover:bg-[#7A5234]"
                         >
                             Explore our drinks
                         </a>
-                        <a
-                            href="#about"
-                            class="inline-flex items-center rounded-full border border-[#FDFBF7]/30 px-7 py-3 text-[13px] font-semibold text-[#FDFBF7]/80 transition-all duration-300 hover:border-[#FDFBF7]/60 hover:text-[#FDFBF7]"
-                        >
-                            Order now
-                        </a>
+
                     </div>
                 </div>
             </div>
@@ -441,7 +430,7 @@ onUnmounted(() => {
 
                 <div class="mt-8 flex justify-center">
                     <a
-                        href="#products"
+                        href="/all-products"
                         class="inline-flex items-center rounded-full border border-[#8B5E3C]/20 px-8 py-3 text-[13px] font-semibold text-[#8B5E3C] transition-all duration-300 hover:border-[#8B5E3C]/40 hover:bg-[#8B5E3C]/5"
                     >
                         View All Products
@@ -586,15 +575,69 @@ onUnmounted(() => {
                         </div>
                     </div>
 
-                    <a
-                        href="#"
+                    <button
+                        v-if="!fullStoryVisible"
+                        @click="fullStoryVisible = true"
                         class="mt-10 inline-flex items-center rounded-full bg-[#8B5E3C] px-7 py-3 text-[13px] font-semibold text-white transition-all duration-300 hover:bg-[#7A5234] sm:mt-12"
                     >
                         Our full story
-                    </a>
+                        <svg
+                            class="ml-2 h-3.5 w-3.5"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            viewBox="0 0 24 24"
+                        >
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                        </svg>
+                    </button>
+
+                    <div
+                        class="overflow-hidden transition-all duration-500 ease-in-out"
+                        :style="{ maxHeight: fullStoryVisible ? '900px' : '0px', opacity: fullStoryVisible ? 1 : 0 }"
+                    >
+                        <div class="mt-8 overflow-hidden rounded-2xl border border-[#2C2318]/[0.06] bg-white">
+                            <img
+                                src="/products/boteaque.jpg"
+                                alt="How it all started"
+                                class="h-56 w-full object-cover sm:h-72"
+                            />
+                            <div class="p-8 sm:p-10">
+                            <h3 class="text-[18px] font-bold text-[#2C2318]">Our Story</h3>
+                            <p class="mt-4 text-[14px] leading-relaxed text-[#2C2318]/60">
+                                Boteaque was born from a simple love for milk tea. What started as a small kiosk in Manila quickly grew into a beloved destination for tea enthusiasts across the Philippines. Our founders traveled to Taiwan to study the art of bubble tea, learning from master tea blenders who perfected their craft over decades.
+                            </p>
+                            <p class="mt-4 text-[14px] leading-relaxed text-[#2C2318]/60">
+                                Today, every cup we serve is a tribute to that journey. We source our tea leaves directly from high-altitude farms in Taiwan and Japan, blend them fresh daily, and pair them with handcrafted pearls made from natural tapioca. No artificial flavors, no shortcuts — just pure, honest ingredients.
+                            </p>
+                            <p class="mt-4 text-[14px] leading-relaxed text-[#2C2318]/60">
+                                Our mission is simple: to bring the world-class milk tea experience closer to every Filipino. Whether you’re grabbing a quick drink on your commute or settling in for an afternoon with friends, Boteaque is here to make every moment a little sweeter.                            </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div v-if="fullStoryVisible" class="mt-6 flex justify-center">
+                        <button
+                            @click="fullStoryVisible = false"
+                            class="flex h-10 w-10 items-center justify-center rounded-full border border-[#2C2318]/10 bg-white shadow-md transition-all duration-300 hover:bg-[#2C2318]/5"
+                        >
+                            <svg
+                                class="h-4 w-4 text-[#2C2318]"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                viewBox="0 0 24 24"
+                            >
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>
+
+
+
 
         <!-- ==================== GRAB A DRINK IN STORE ==================== -->
         <section data-section="store" class="py-16 sm:py-24">

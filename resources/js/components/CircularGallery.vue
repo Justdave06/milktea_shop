@@ -236,21 +236,7 @@ onBeforeUnmount(() => {
                     >
                         {{ item.text }}
                     </p>
-                    <div
-                        class="mt-3 flex justify-center overflow-hidden transition-all duration-500 ease-out"
-                        :style="{
-                            maxHeight: i === activeIndex ? '60px' : '0px',
-                            opacity: i === activeIndex ? 1 : 0,
-                        }"
-                    >
-                        <a
-                            :href="item.buttonLink || '#register'"
-                            class="inline-flex items-center rounded-full bg-[#8B5E3C] px-5 py-2 text-xs font-semibold text-white shadow-md transition-all duration-300 hover:bg-[#7A5234] hover:shadow-lg"
-                            @click.stop
-                        >
-                            {{ item.buttonText }}
-                        </a>
-                    </div>
+
                 </div>
             </div>
         </div>

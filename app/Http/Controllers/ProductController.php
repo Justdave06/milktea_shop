@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ProductController extends Controller
@@ -58,24 +57,10 @@ class ProductController extends Controller
         ],
     ];
 
-    public function show(string $name)
+    public function index()
     {
-        $product = $this->products[$name] ?? null;
-
-        if (! $product) {
-            abort(404);
-        }
-
-        return Inertia::render('Product', [
-            'product' => $product,
-            'addOns' => [
-                ['name' => 'Extra Pearls', 'price' => 20],
-                ['name' => 'Extra Pudding', 'price' => 20],
-                ['name' => 'Extra Cream', 'price' => 15],
-                ['name' => 'Grass Jelly', 'price' => 15],
-                ['name' => 'Nata de Coco', 'price' => 15],
-                ['name' => 'Crystal Pearls', 'price' => 20],
-            ],
+        return Inertia::render('AllProducts', [
+            'products' => array_values($this->products),
         ]);
     }
 }
