@@ -2,89 +2,84 @@
 import { Link } from '@inertiajs/vue3';
 import { ref, onMounted, onUnmounted, computed } from 'vue';
 import AccordionGallery from '@/components/AccordionGallery.vue';
+import CircularGallery from '@/components/CircularGallery.vue';
 
 const activeFilter = ref('all');
 const scrolled = ref(false);
 const menuVisible = ref(false);
 const aboutVisible = ref(false);
 const storeVisible = ref(false);
-const orderVisible = ref(false);
+const productsVisible = ref(false);
 const newsVisible = ref(false);
 const footerVisible = ref(false);
-
-const filters = [
-    { key: 'all', label: 'All' },
-    { key: 'bestseller', label: 'Bestseller' },
-    { key: 'toppick', label: 'Top Picks' },
-];
 
 const drinks = [
     {
         name: 'Signature 3Q Milk Tea',
         description:
             "Milksha's bestselling signature milk tea layered with a trio of honey pearls, crystals, and pudding.",
-        image: 'https://images.unsplash.com/photo-1558857563-b371033873b8?w=600&h=600&fit=crop&auto=format',
+        image: '/products/milktea.jpg',
         tags: ['bestseller', 'toppick'],
         priceM: '₱140',
         priceL: '₱160',
     },
     {
-        name: 'Strawberry Coulis Milk',
+        name: 'Strawberry Milk Tea',
         description:
             'Creamy milk swirled with a rich strawberry coulis for an indulgent treat.',
-        image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=600&h=600&fit=crop&auto=format',
+        image: '/products/milktea red velvet.jpg',
         tags: ['bestseller', 'toppick'],
         priceM: '₱120',
         priceL: '₱140',
     },
     {
-        name: 'Jasmine Green Tea with Cloudy Cream',
+        name: 'Jasmine Milktea',
         description:
-            'Light and fragrant Jasmine green tea topped with our lush Cloudy Cream.',
-        image: 'https://images.unsplash.com/photo-1563911892437-1feda0179e1b?w=600&h=600&fit=crop&auto=format',
+            'Light and fragrant Jasmine milktea topped with our lush Cloudy Cream.',
+        image: '/products/milktea3.jpg',
         tags: ['bestseller', 'toppick'],
         priceM: '₱120',
         priceL: '₱140',
     },
     {
-        name: 'Signature Milk Tea with Honey Pearls',
+        name: 'Classic Milk Tea',
         description:
-            "Milksha's bestselling signature milk tea with honey pearls.",
-        image: 'https://images.unsplash.com/photo-1541658016709-82535e94bc69?w=600&h=600&fit=crop&auto=format',
+            "Our bestselling signature milk tea with honey pearls.",
+        image: '/products/Bubble-Milk-Tea.webp',
         tags: ['bestseller'],
         priceM: '₱120',
         priceL: '₱140',
     },
     {
-        name: 'Brown Sugar Milk with Honey Pearls',
+        name: 'Brown Sugar Boba',
         description:
             'Creamy milk sweetened with rich, caramelized brown sugar, topped with honey pearls.',
-        image: 'https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=600&h=600&fit=crop&auto=format',
+        image: '/products/brown-sugar-boba-milk-tea-with-cream-cheese-foam-close-up-bubble-tea-photo.jpg',
         tags: ['toppick'],
         priceM: '₱140',
         priceL: '₱160',
     },
     {
-        name: 'Japanese Matcha with Cloudy Cream',
-        description: 'Pure Japanese Matcha topped with our lush Cloudy Cream.',
-        image: 'https://images.unsplash.com/photo-1527661591475-527312dd65f5?w=600&h=600&fit=crop&auto=format',
+        name: 'Matcha Milktea',
+        description: 'Pure Japanese Matcha blended into a creamy milktea.',
+        image: '/products/Matcha-milk-tea-post-6.jpg',
         tags: ['bestseller', 'toppick'],
         priceM: '₱120',
         priceL: '₱140',
     },
     {
-        name: 'Fresh Taro Milk',
-        description: 'Fresh crushed Taro blended with a creamy milk.',
-        image: 'https://images.unsplash.com/photo-1558857563-b371033873b8?w=600&h=600&fit=crop&auto=format',
+        name: 'Ube Milktea',
+        description: 'Fresh crushed Ube blended with a creamy milk.',
+        image: '/products/milktea ube.jpg',
         tags: ['toppick'],
         priceM: '₱160',
         priceL: '₱180',
     },
     {
-        name: 'Honey Lemonade with Green Tea Jelly',
+        name: 'Okinawa Milktea',
         description:
-            'Light and fresh lemon juice with honey, paired with Green Tea Jelly.',
-        image: 'https://images.unsplash.com/photo-1541658016709-82535e94bc69?w=600&h=600&fit=crop&auto=format',
+            'Rich and caramelized Okinawa brown sugar blended into a creamy milktea.',
+        image: '/products/milktea4.jpg',
         tags: ['bestseller'],
         priceM: '₱140',
         priceL: '₱160',
@@ -99,11 +94,57 @@ const filteredDrinks = computed(() => {
     return drinks.filter((d) => d.tags.includes(activeFilter.value));
 });
 
-const galleryItems = computed(() =>
+/* Cinematic marketing / lifestyle shots for the accordion gallery */
+const galleryItems = computed(() => [
+    {
+        image: '/products/feature.jpg',
+        label: 'Artisan Craft',
+        details: 'Handcrafted with passion',
+    },
+    {
+        image: '/products/feature.webp',
+        label: 'Morning Ritual',
+        details: 'Start your day right',
+    },
+    {
+        image: '/products/feature (2).jpg',
+        label: 'Café Culture',
+        details: 'Where moments are made',
+    },
+    {
+        image: '/products/milktea.jpeg',
+        label: 'Premium Ingredients',
+        details: 'Sourced from the finest estates',
+    },
+    {
+        image: '/products/milktea (2).jpg',
+        label: 'Fresh & Pure',
+        details: 'Quality you can taste',
+    },
+    {
+        image: '/products/taiwan-milk-tea-with-bubble-free-photo.jpg',
+        label: 'Latte Art',
+        details: 'Every cup is a masterpiece',
+    },
+    {
+        image: '/products/milktea ube.jpg',
+        label: 'Signature Blends',
+        details: 'Boteaque lifestyle',
+    },
+    {
+        image: '/products/Vietnamese-Milk-Tea-1_1701613045.webp',
+        label: 'Urban Vibes',
+        details: 'Your daily escape',
+    },
+]);
+
+/* Circular gallery items: products with prices and order buttons */
+const circularItems = computed(() =>
     filteredDrinks.value.map((drink) => ({
         image: drink.image,
-        label: drink.name,
-        details: `M ${drink.priceM} · L ${drink.priceL}`,
+        text: `${drink.name}  ·  ${drink.priceM}`,
+        buttonText: 'Order Now',
+        buttonLink: `/product/${encodeURIComponent(drink.name)}`,
     })),
 );
 
@@ -145,8 +186,8 @@ function setupObserver() {
                         storeVisible.value = true;
                     }
 
-                    if (id === 'order') {
-                        orderVisible.value = true;
+                    if (id === 'products') {
+                        productsVisible.value = true;
                     }
 
                     if (id === 'news') {
@@ -185,8 +226,8 @@ onUnmounted(() => {
             class="fixed inset-x-0 top-0 z-50 transition-all duration-300"
             :class="
                 scrolled
-                    ? 'bg-[#F6E7C6]/90 shadow-[0_1px_0_0_rgba(0,0,0,0.06)] backdrop-blur-md'
-                    : 'bg-[#F6E7C6]'
+                    ? 'bg-[#F6E7C6] shadow-[0_1px_0_0_rgba(0,0,0,0.06)]'
+                    : 'bg-transparent'
             "
         >
             <nav
@@ -230,7 +271,8 @@ onUnmounted(() => {
                         />
                     </svg>
                     <span
-                        class="text-[16px] font-bold tracking-[0.01em] text-[#2C2318]"
+                        class="text-[16px] font-bold tracking-[0.01em]"
+                        :class="scrolled ? 'text-[#2C2318]' : 'text-white'"
                         >Boteaque</span
                     >
                 </Link>
@@ -238,39 +280,39 @@ onUnmounted(() => {
                 <div class="hidden items-center gap-8 md:flex">
                     <a
                         href="#home"
-                        class="text-[13px] font-medium text-[#2C2318]/50 transition-colors hover:text-[#8B5E3C]"
+                        class="text-[13px] font-medium transition-colors"
+                        :class="scrolled ? 'text-[#2C2318]/50 hover:text-[#8B5E3C]' : 'text-white/70 hover:text-white'"
                         >Home</a
                     >
                     <a
                         href="#menu"
-                        class="text-[13px] font-medium text-[#2C2318]/50 transition-colors hover:text-[#8B5E3C]"
+                        class="text-[13px] font-medium transition-colors"
+                        :class="scrolled ? 'text-[#2C2318]/50 hover:text-[#8B5E3C]' : 'text-white/70 hover:text-white'"
                         >Menu</a
                     >
                     <a
                         href="#about"
-                        class="text-[13px] font-medium text-[#2C2318]/50 transition-colors hover:text-[#8B5E3C]"
+                        class="text-[13px] font-medium transition-colors"
+                        :class="scrolled ? 'text-[#2C2318]/50 hover:text-[#8B5E3C]' : 'text-white/70 hover:text-white'"
                         >Our Story</a
                     >
-                    <a
-                        href="#news"
-                        class="text-[13px] font-medium text-[#2C2318]/50 transition-colors hover:text-[#8B5E3C]"
-                        >News</a
-                    >
+                    
                 </div>
 
-                <Link
-                    href="/register"
-                    class="rounded-full bg-[#8B5E3C] px-6 py-2.5 text-[13px] font-semibold text-white transition-all duration-300 hover:bg-[#7A5234]"
+                <a
+                    href="#products"
+                    class="rounded-full px-6 py-2.5 text-[13px] font-semibold transition-all duration-300"
+                    :class="scrolled ? 'bg-[#8B5E3C] text-white hover:bg-[#7A5234]' : 'border border-white/30 text-white hover:border-white/60'"
                 >
                     Order Now
-                </Link>
+                </a>
             </nav>
         </header>
 
         <!-- ==================== HERO ==================== -->
         <section
             id="home"
-            class="relative flex min-h-[88vh] items-center overflow-hidden"
+            class="relative flex min-h-screen items-center overflow-hidden"
         >
             <!-- Background image -->
             <div class="absolute inset-0">
@@ -288,23 +330,21 @@ onUnmounted(() => {
                     <h1
                         class="text-[2.75rem] leading-[1.08] font-bold tracking-[-0.02em] text-[#FDFBF7] sm:text-6xl"
                     >
-                        Experience pure
+                        Savour Pure
                         <br />
-                        indulgence &amp; freshness
+                        Elegance &amp; Freshness 
                     </h1>
                     <p
                         class="mt-5 max-w-md text-[15px] leading-relaxed text-[#FDFBF7]/75"
                     >
-                        Fresh milk and tea beverages, crafted with high quality
-                        ingredients and brewed using traditional Taiwanese
-                        methods.
+                        Designed for milk tea lovers, bringing handcrafted, world-class beverages straight to the heart of the Philippines.
                     </p>
                     <div class="mt-8 flex gap-3">
                         <a
                             href="#menu"
                             class="inline-flex items-center rounded-full bg-[#8B5E3C] px-7 py-3 text-[13px] font-semibold text-white transition-all duration-300 hover:bg-[#7A5234]"
                         >
-                            Discover the drinks
+                            Explore our drinks
                         </a>
                         <a
                             href="#about"
@@ -319,38 +359,19 @@ onUnmounted(() => {
 
         <!-- ==================== MENU ==================== -->
         <section id="menu" data-section="menu" class="py-16 sm:py-24">
-            <div class="mx-auto max-w-[1200px] px-6 lg:px-8">
-                <div
-                    class="mb-8 transition-all duration-700 sm:mb-12"
-                    :class="
-                        menuVisible
-                            ? 'translate-y-0 opacity-100'
-                            : 'translate-y-6 opacity-0'
-                    "
+            <div
+                class="flex items-center justify-center py-12 transition-all duration-700 sm:py-20"
+                :class="
+                    menuVisible
+                        ? 'translate-y-0 opacity-100'
+                        : 'translate-y-6 opacity-0'
+                "
+            >
+                <h2
+                    class="text-center text-[3rem] font-bold tracking-[-0.03em] text-[#2C2318] sm:text-[5rem] lg:text-[7rem]"
                 >
-                    <h2
-                        class="text-[2rem] font-bold tracking-[-0.02em] text-[#2C2318] sm:text-[2.5rem]"
-                    >
-                        Drinks
-                    </h2>
-
-                    <!-- Filter Tabs -->
-                    <div class="mt-6 flex gap-2">
-                        <button
-                            v-for="filter in filters"
-                            :key="filter.key"
-                            @click="activeFilter = filter.key"
-                            class="rounded-full px-5 py-2 text-[13px] font-medium transition-all duration-300"
-                            :class="
-                                activeFilter === filter.key
-                                    ? 'bg-[#8B5E3C] text-white'
-                                    : 'bg-[#8B5E3C]/8 text-[#2C2318]/60 hover:bg-[#8B5E3C]/15'
-                            "
-                        >
-                            {{ filter.label }}
-                        </button>
-                    </div>
-                </div>
+                    Signature Collection
+                </h2>
             </div>
 
             <div
@@ -371,8 +392,74 @@ onUnmounted(() => {
                     accent-color="#F6E7C6"
                     overlay-color="#2C2318"
                     text-color="#FDFBF7"
-                    :grayscale="false"
+                    :grayscale="true"
                 />
+            </div>
+        </section>
+
+        <!-- ==================== PRODUCTS / CIRCULAR GALLERY ==================== -->
+        <section
+            id="products"
+            data-section="products"
+            class="bg-[#F5F0E8] py-16 sm:py-24"
+        >
+            <div class="mx-auto max-w-[1200px] px-6 lg:px-8">
+                <div
+                    class="transition-all duration-700"
+                    :class="
+                        productsVisible
+                            ? 'translate-y-0 opacity-100'
+                            : 'translate-y-6 opacity-0'
+                    "
+                >
+                    <div class="flex items-center justify-center py-12 sm:py-20">
+                        <h2
+                            class="text-center text-[3rem] font-bold tracking-[-0.03em] text-[#2C2318] sm:text-[5rem] lg:text-[7rem]"
+                        >
+                            Our Menu
+                        </h2>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                class="transition-all duration-700"
+                :class="
+                    productsVisible
+                        ? 'translate-y-0 opacity-100'
+                        : 'translate-y-6 opacity-0'
+                "
+            >
+                <CircularGallery
+                    :items="circularItems"
+                    :bend="3"
+                    text-color="#2C2318"
+                    :border-radius="12"
+                    :scroll-speed="2"
+                    :height="650"
+                />
+
+                <div class="mt-8 flex justify-center">
+                    <a
+                        href="#products"
+                        class="inline-flex items-center rounded-full border border-[#8B5E3C]/20 px-8 py-3 text-[13px] font-semibold text-[#8B5E3C] transition-all duration-300 hover:border-[#8B5E3C]/40 hover:bg-[#8B5E3C]/5"
+                    >
+                        View All Products
+                        <svg
+                            class="ml-2 h-3.5 w-3.5"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                            />
+                        </svg>
+                    </a>
+                </div>
             </div>
         </section>
 
@@ -391,11 +478,13 @@ onUnmounted(() => {
                             : 'translate-y-6 opacity-0'
                     "
                 >
-                    <h2
-                        class="text-[2rem] font-bold tracking-[-0.02em] text-[#2C2318] sm:text-[2.5rem]"
-                    >
-                        Taste the Boteaque difference
-                    </h2>
+                    <div class="flex items-center justify-center py-12 sm:py-20">
+                        <h2
+                            class="text-center text-[2.5rem] font-bold tracking-[-0.03em] text-[#2C2318] sm:text-[4rem] lg:text-[5.5rem]"
+                        >
+                            Why Choose Us?
+                        </h2>
+                    </div>
 
                     <div
                         class="mt-10 grid gap-8 sm:mt-12 sm:grid-cols-3 sm:gap-12"
@@ -422,13 +511,12 @@ onUnmounted(() => {
                                 <p
                                     class="text-[15px] font-semibold text-[#2C2318]"
                                 >
-                                    Authentic Taiwanese freshness
+                                    Freshly Made in the Philippines
                                 </p>
                                 <p
                                     class="mt-2 text-[13px] leading-relaxed text-[#2C2318]/45"
                                 >
-                                    Sourced directly from family estates in
-                                    Taiwan and Japan.
+                                    Crafted using high-quality tea leaves and fresh milk, thoughtfully blended for local tastes.
                                 </p>
                             </div>
                         </div>
@@ -455,13 +543,12 @@ onUnmounted(() => {
                                 <p
                                     class="text-[15px] font-semibold text-[#2C2318]"
                                 >
-                                    Dedication to crafting world-class beverages
+                                    Proudly Handcrafted Quality
                                 </p>
                                 <p
                                     class="mt-2 text-[13px] leading-relaxed text-[#2C2318]/45"
                                 >
-                                    No premixes. No shortcuts. Every cup made to
-                                    order.
+                                    No artificial shortcuts. Every single cup is brewed fresh to order right here in the store.
                                 </p>
                             </div>
                         </div>
@@ -488,13 +575,12 @@ onUnmounted(() => {
                                 <p
                                     class="text-[15px] font-semibold text-[#2C2318]"
                                 >
-                                    Your milk tea companion
+                                    Your Everyday Pinoy Companion
                                 </p>
                                 <p
                                     class="mt-2 text-[13px] leading-relaxed text-[#2C2318]/45"
                                 >
-                                    A moment of joy in every sip, crafted with
-                                    care.
+                                    Serving up daily happiness in every cup, perfect for sharing with family and friends.
                                 </p>
                             </div>
                         </div>
@@ -521,11 +607,13 @@ onUnmounted(() => {
                             : 'translate-y-6 opacity-0'
                     "
                 >
-                    <h2
-                        class="text-[2rem] font-bold tracking-[-0.02em] text-[#2C2318] sm:text-[2.5rem]"
-                    >
-                        Grab a drink in store
-                    </h2>
+                    <div class="flex items-center justify-center py-12 sm:py-20">
+                        <h2
+                            class="text-center text-[2.5rem] font-bold tracking-[-0.03em] text-[#2C2318] sm:text-[4rem] lg:text-[5.5rem]"
+                        >
+                            Visit Our Store Near You
+                        </h2>
+                    </div>
 
                     <div class="mt-8 grid gap-6 sm:mt-10 sm:grid-cols-2">
                         <!-- Concept Store Card -->
@@ -548,10 +636,8 @@ onUnmounted(() => {
                                 <p
                                     class="mt-2 text-[13px] leading-relaxed text-[#2C2318]/45"
                                 >
-                                    Step into Boteaque's first ever Philippines
-                                    concept store! We offer fresh milk and tea
-                                    beverages, crafted with high quality
-                                    ingredients.
+                                    Drop by our flagship store! Experience your favorite milk teas freshly prepared
+                                     with top-quality ingredients in a cozy space.
                                 </p>
                                 <a
                                     href="#"
@@ -595,7 +681,7 @@ onUnmounted(() => {
                                 href="#"
                                 class="mt-6 inline-flex w-fit items-center rounded-full bg-[#8B5E3C] px-6 py-2.5 text-[13px] font-semibold text-white transition-all duration-300 hover:bg-[#7A5234]"
                             >
-                                Find nearest store
+                                Find
                             </a>
                         </div>
                     </div>
@@ -603,99 +689,9 @@ onUnmounted(() => {
             </div>
         </section>
 
-        <!-- ==================== ORDER CTA ==================== -->
-        <section data-section="order" class="bg-[#F5F0E8] py-16 sm:py-24">
-            <div class="mx-auto max-w-[1200px] px-6 lg:px-8">
-                <div
-                    class="overflow-hidden rounded-2xl bg-white transition-all duration-700"
-                    :class="
-                        orderVisible
-                            ? 'translate-y-0 opacity-100'
-                            : 'translate-y-6 opacity-0'
-                    "
-                >
-                    <div class="grid items-center gap-0 sm:grid-cols-2">
-                        <div class="p-8 sm:p-12">
-                            <h2
-                                class="text-[1.75rem] leading-tight font-bold tracking-[-0.02em] text-[#2C2318] sm:text-[2rem]"
-                            >
-                                Order your drink online
-                            </h2>
-                            <p
-                                class="mt-4 text-[14px] leading-relaxed text-[#2C2318]/45"
-                            >
-                                Get your Boteaque fix delivered straight to your
-                                door. Available for pickup and delivery across
-                                the city.
-                            </p>
-                            <a
-                                href="#"
-                                class="mt-6 inline-flex items-center rounded-full bg-[#8B5E3C] px-7 py-3 text-[13px] font-semibold text-white transition-all duration-300 hover:bg-[#7A5234]"
-                            >
-                                Order now
-                            </a>
-                        </div>
-                        <div
-                            class="h-64 overflow-hidden sm:h-auto sm:min-h-[320px]"
-                        >
-                            <img
-                                src="https://images.unsplash.com/photo-1558857563-b371033873b8?w=800&h=600&fit=crop&auto=format"
-                                alt="Boteaque drinks"
-                                class="h-full w-full object-cover"
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- ==================== NEWS ==================== -->
-        <section data-section="news" class="py-16 sm:py-24">
-            <div class="mx-auto max-w-[1200px] px-6 lg:px-8">
-                <div
-                    class="transition-all duration-700"
-                    :class="
-                        newsVisible
-                            ? 'translate-y-0 opacity-100'
-                            : 'translate-y-6 opacity-0'
-                    "
-                >
-                    <div class="flex items-center justify-between">
-                        <h2
-                            class="text-[2rem] font-bold tracking-[-0.02em] text-[#2C2318] sm:text-[2.5rem]"
-                        >
-                            The latest tea
-                        </h2>
-                        <a
-                            href="#"
-                            class="text-[13px] font-semibold text-[#8B5E3C] transition-colors hover:text-[#7A5234]"
-                        >
-                            View all
-                        </a>
-                    </div>
 
-                    <div class="mt-8 grid gap-4 sm:grid-cols-3">
-                        <a
-                            v-for="(item, i) in news"
-                            :key="i"
-                            href="#"
-                            class="group rounded-2xl border border-[#2C2318]/[0.06] bg-white p-6 transition-all duration-300 hover:border-[#8B5E3C]/20 hover:shadow-[0_8px_30px_rgba(139,94,60,0.08)]"
-                        >
-                            <h3
-                                class="text-[14px] leading-snug font-semibold text-[#2C2318] transition-colors group-hover:text-[#8B5E3C]"
-                            >
-                                {{ item.title }}
-                            </h3>
-                            <p
-                                class="mt-3 text-[12px] font-medium text-[#2C2318]/35"
-                            >
-                                {{ item.source }}
-                            </p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
+    
 
         <!-- ==================== FOOTER ==================== -->
         <footer
