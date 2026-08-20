@@ -304,7 +304,7 @@ onUnmounted(() => {
                     class="rounded-full px-6 py-2.5 text-[13px] font-semibold transition-all duration-300"
                     :class="scrolled ? 'bg-[#8B5E3C] text-white hover:bg-[#7A5234]' : 'border border-white/30 text-white hover:border-white/60'"
                 >
-                    Order Now
+                    My orders
                 </a>
             </nav>
         </header>
