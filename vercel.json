@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "cd /var/task && composer install --no-dev --optimize-autoloader --no-interaction && npm run build",
+  "buildCommand": "composer install --no-dev --optimize-autoloader --no-interaction && npm run vercel-build",
   "devCommand": "php artisan serve",
   "installCommand": "composer install --no-dev --optimize-autoloader --no-interaction && npm install",
   "functions": {
