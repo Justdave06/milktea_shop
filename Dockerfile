@@ -25,12 +25,12 @@ RUN npm install
 
 RUN npm run build
 
-RUN php artisan config:cache && php artisan route:cache && php artisan view:cache
-
 RUN a2enmod rewrite
 
 COPY docker/000-default.conf /etc/apache2/sites-available/000-default.conf
+COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 EXPOSE 80
 
-CMD ["apache2-foreground"]
+ENTRYPOINT ["entrypoint.sh"]
