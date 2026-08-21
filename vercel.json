@@ -1,9 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "composer install --no-dev --optimize-autoloader --no-interaction && npm run build",
+  "buildCommand": "cd /var/task && composer install --no-dev --optimize-autoloader --no-interaction && npm run build",
   "devCommand": "php artisan serve",
   "installCommand": "composer install --no-dev --optimize-autoloader --no-interaction && npm install",
-  "framework": "laravel",
   "functions": {
     "public/index.php": {
       "runtime": "php@8.4",
