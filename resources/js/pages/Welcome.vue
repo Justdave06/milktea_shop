@@ -15,6 +15,10 @@ const fullStoryVisible = ref(false);
 const mobileMenuOpen = ref(false);
 const isMobile = ref(false);
 const galleryIndex = ref(0);
+const carouselRef = ref<HTMLDivElement | null>(null);
+const touchStartX = ref(0);
+const touchStartIndex = ref(0);
+const isDragging = ref(false);
 
 function checkMobile() {
     isMobile.value = window.innerWidth < 640;
@@ -22,10 +26,56 @@ function checkMobile() {
 
 function galleryPrev() {
     if (galleryIndex.value > 0) galleryIndex.value--;
+    scrollToIndex(galleryIndex.value);
 }
 
 function galleryNext() {
     if (galleryIndex.value < galleryItems.value.length - 1) galleryIndex.value++;
+    scrollToIndex(galleryIndex.value);
+}
+
+function scrollToIndex(index: number) {
+    if (!carouselRef.value) return;
+    const itemWidth = 192; // 180px item + 12px margin
+    const containerPadding = 24; // px-12 = 24px each side
+    const viewportWidth = carouselRef.value.clientWidth;
+    const centerOffset = (viewportWidth - 180) / 2;
+    const scrollLeft = index * itemWidth - centerOffset + containerPadding;
+    carouselRef.value.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+}
+
+function handleTouchStart(e: TouchEvent) {
+    touchStartX.value = e.touches[0].clientX;
+    touchStartIndex.value = galleryIndex.value;
+    isDragging.value = true;
+    if (carouselRef.value) {
+        carouselRef.value.style.scrollBehavior = 'auto';
+    }
+}
+
+function handleTouchMove(e: TouchEvent) {
+    if (!isDragging.value || !carouselRef.value) return;
+    const deltaX = touchStartX.value - e.touches[0].clientX;
+    const itemWidth = 192;
+    const containerPadding = 24;
+    const viewportWidth = carouselRef.value.clientWidth;
+    const centerOffset = (viewportWidth - 180) / 2;
+    const baseScrollLeft = touchStartIndex.value * itemWidth - centerOffset + containerPadding;
+    carouselRef.value.scrollLeft = baseScrollLeft + deltaX;
+}
+
+function handleTouchEnd() {
+    if (!isDragging.value || !carouselRef.value) return;
+    isDragging.value = false;
+    carouselRef.value.style.scrollBehavior = 'smooth';
+    const itemWidth = 192;
+    const containerPadding = 24;
+    const viewportWidth = carouselRef.value.clientWidth;
+    const centerOffset = (viewportWidth - 180) / 2;
+    const scrollLeft = carouselRef.value.scrollLeft;
+    const calculatedIndex = Math.round((scrollLeft + centerOffset - containerPadding) / itemWidth);
+    galleryIndex.value = Math.max(0, Math.min(calculatedIndex, galleryItems.value.length - 1));
+    scrollToIndex(galleryIndex.value);
 }
 
 const drinks = [
@@ -456,15 +506,18 @@ onUnmounted(() => {
 
                 <!-- Mobile: simple carousel gallery -->
                 <div v-else class="relative px-12">
-                    <div class="overflow-hidden">
-                        <div
-                            class="flex transition-transform duration-300 ease-out"
-                            :style="{ transform: `translateX(-${galleryIndex * 196}px)` }"
-                        >
+                    <div
+                        ref="carouselRef"
+                        class="overflow-x-auto snap-x snap-mandatory pb-4 -mx-12 px-12 carousel-hide-scrollbar"
+                        @touchstart="handleTouchStart"
+                        @touchmove="handleTouchMove"
+                        @touchend="handleTouchEnd"
+                    >
+                        <div class="flex gap-3">
                             <div
                                 v-for="(item, i) in galleryItems"
                                 :key="i"
-                                class="relative mr-3 h-[240px] w-[180px] flex-shrink-0 overflow-hidden rounded-2xl"
+                                class="relative h-[240px] w-[180px] flex-shrink-0 overflow-hidden rounded-2xl snap-center"
                             >
                                 <img
                                     :src="item.image"
@@ -1070,5 +1123,13 @@ onUnmounted(() => {
 <style scoped>
 html {
     scroll-behavior: smooth;
+}
+
+.carousel-hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.carousel-hide-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 </style>
