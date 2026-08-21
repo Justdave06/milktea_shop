@@ -1,14 +1,56 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 
-defineProps<{
-    products: {
-        name: string;
-        description: string;
-        image: string;
-        prices: Record<string, number>;
-    }[];
-}>();
+const products = [
+    {
+        name: 'Signature 3Q Milk Tea',
+        description: "Milksha's bestselling signature milk tea layered with a trio of honey pearls, crystals, and pudding.",
+        image: '/products/milktea.jpg',
+        prices: { M: 140, L: 160 },
+    },
+    {
+        name: 'Strawberry Milk Tea',
+        description: 'Creamy milk swirled with a rich strawberry coulis for an indulgent treat.',
+        image: '/products/milktea red velvet.jpg',
+        prices: { M: 120, L: 140 },
+    },
+    {
+        name: 'Jasmine Milktea',
+        description: 'Light and fragrant Jasmine milktea topped with our lush Cloudy Cream.',
+        image: '/products/milktea3.jpg',
+        prices: { M: 120, L: 140 },
+    },
+    {
+        name: 'Classic Milk Tea',
+        description: 'Our bestselling signature milk tea with honey pearls.',
+        image: '/products/Bubble-Milk-Tea.webp',
+        prices: { M: 120, L: 140 },
+    },
+    {
+        name: 'Brown Sugar Boba',
+        description: 'Creamy milk sweetened with rich, caramelized brown sugar, topped with honey pearls.',
+        image: '/products/brown-sugar-boba-milk-tea-with-cream-cheese-foam-close-up-bubble-tea-photo.jpg',
+        prices: { M: 140, L: 160 },
+    },
+    {
+        name: 'Matcha Milktea',
+        description: 'Pure Japanese Matcha blended into a creamy milktea.',
+        image: '/products/Matcha-milk-tea-post-6.jpg',
+        prices: { M: 120, L: 140 },
+    },
+    {
+        name: 'Ube Milktea',
+        description: 'Fresh crushed Ube blended with a creamy milk.',
+        image: '/products/milktea ube.jpg',
+        prices: { M: 160, L: 180 },
+    },
+    {
+        name: 'Okinawa Milktea',
+        description: 'Rich and caramelized Okinawa brown sugar blended into a creamy milktea.',
+        image: '/products/milktea4.jpg',
+        prices: { M: 140, L: 160 },
+    },
+];
 </script>
 
 <template>
