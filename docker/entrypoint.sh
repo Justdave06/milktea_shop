@@ -7,6 +7,12 @@ echo "APP_ENV: $APP_ENV"
 echo "PWD: $(pwd)"
 ls -la
 
+# Create .env from .env.example if not exists
+if [ ! -f /var/www/html/.env ]; then
+    echo "Creating .env from .env.example..."
+    cp /var/www/html/.env.example /var/www/html/.env
+fi
+
 # Generate APP_KEY if not set
 if [ -z "$APP_KEY" ]; then
     echo "Generating APP_KEY..."
