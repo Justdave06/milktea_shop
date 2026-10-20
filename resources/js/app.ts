@@ -1,27 +1,11 @@
-import { createInertiaApp } from '@inertiajs/vue3';
+import '../css/app.css';
+import { createApp } from 'vue';
 import { initializeTheme } from '@/composables/useAppearance';
-import { initializeFlashToast } from '@/lib/flashToast';
+import AllProducts from '@/pages/AllProducts.vue';
+import Welcome from '@/pages/Welcome.vue';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const normalizedPath = window.location.pathname.replace(/\/+$/, '') || '/';
+const page = normalizedPath === '/all-products' ? AllProducts : Welcome;
 
-createInertiaApp({
-    title: (title) => (title ? `${title} - ${appName}` : appName),
-    layout: (name) => {
-        switch (true) {
-            case name === 'Welcome':
-            case name === 'Product':
-                return null;
-            default:
-                return null;
-        }
-    },
-    progress: {
-        color: '#4B5563',
-    },
-});
-
-// This will set light / dark mode on page load...
 initializeTheme();
-
-// This will listen for flash toast data from the server...
-initializeFlashToast();
+createApp(page).mount('#app');

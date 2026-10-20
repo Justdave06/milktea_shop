@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
-
 const products = [
     {
         name: 'Signature 3Q Milk Tea',
@@ -58,7 +56,7 @@ const products = [
         <!-- ==================== HEADER ==================== -->
         <section class="relative overflow-hidden bg-[#F5F0E8] py-16 sm:py-24">
             <div class="mx-auto max-w-[1200px] px-6 lg:px-8">
-                <Link
+                <a
                     href="/"
                     class="mb-6 inline-flex items-center gap-2 text-[13px] font-medium text-[#2C2318]/50 transition-colors hover:text-[#8B5E3C]"
                 >
@@ -66,7 +64,7 @@ const products = [
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                     </svg>
                     Back to home
-                </Link>
+                </a>
                 <h1 class="text-[2rem] font-bold tracking-[-0.03em] text-[#2C2318] sm:text-[3rem] lg:text-[5rem]">
                     All Products
                 </h1>
